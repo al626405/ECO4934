@@ -4,7 +4,7 @@
 #### Final Project 
 
 #### <u>**Team 1:**</u>
-- Polina
+- Polina Baikova
 - Jonathon Lewis
-- Peyton 
+- Payton Irvin
 - Alexis Leclerc
