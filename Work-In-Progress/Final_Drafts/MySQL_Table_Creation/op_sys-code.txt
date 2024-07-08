@@ -1,0 +1,62 @@
+-- Drop existing op_sys table (only if you need to recreate it)
+DROP TABLE IF EXISTS op_sys;
+
+-- Create the op_sys table with the desired structure
+CREATE TABLE op_sys (
+    id INT(11),
+    `what` ENUM('AIX GTK', 'AIX Motif', 'All', 'HP-UX', 'Linux', 'Linux-GTK', 'Linux-Motif', 'Linux Qt', 'Mac OS', 'Mac OS X', 'MacOS X', 'Mac OS X - Cocoa', 'Neutrino', 'other', 'Other', 'QNX-Photon', 'Solaris', 'Solaris-GTK', 'Solaris-Motif', 'SymbianOS S60', 'SymbianOS-Series 80', 'Symbian Qt', 'Unix All', 'what', 'Windows 2000', 'Windows 2003 Server', 'Windows 7', 'Windows 95', 'Windows 98', 'Windows All', 'Windows CE', 'Windows Me', 'Windows ME', 'Windows Mobile 2003', 'Windows Mobile 5.0', 'Windows NT', 'Windows Server 2003', 'Windows Server 2008', 'Windows Vista', 'Windows Vista Beta 2', 'Windows Vista-WPF', 'Windows XP'),
+    `when` DATETIME,
+    `who` INT(11),
+    PRIMARY KEY (id)
+);
+
+-- Start a transaction to ensure atomicity
+START TRANSACTION;
+
+-- Create a temporary table to hold the data
+CREATE TEMPORARY TABLE temp_op_sys (
+    id INT(11),
+    `what` ENUM('AIX GTK', 'AIX Motif', 'All', 'HP-UX', 'Linux', 'Linux-GTK', 'Linux-Motif', 'Linux Qt', 'Mac OS', 'Mac OS X', 'MacOS X', 'Mac OS X - Cocoa', 'Neutrino', 'other', 'Other', 'QNX-Photon', 'Solaris', 'Solaris-GTK', 'Solaris-Motif', 'SymbianOS S60', 'SymbianOS-Series 80', 'Symbian Qt', 'Unix All', 'what', 'Windows 2000', 'Windows 2003 Server', 'Windows 7', 'Windows 95', 'Windows 98', 'Windows All', 'Windows CE', 'Windows Me', 'Windows ME', 'Windows Mobile 2003', 'Windows Mobile 5.0', 'Windows NT', 'Windows Server 2003', 'Windows Server 2008', 'Windows Vista', 'Windows Vista Beta 2', 'Windows Vista-WPF', 'Windows XP'),
+    `when` DATETIME,
+    `who` INT(11)
+);
+
+-- Load data from CSV file into the temporary table
+LOAD DATA INFILE '/var/lib/mysql/Final_Project/T1/op_sys.csv'
+INTO TABLE temp_op_sys
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(id, `what`, @unix_time, `who`)
+SET `when` = FROM_UNIXTIME(@unix_time),
+    `what` = NULLIF(`what`, ''),
+    `who` = NULLIF(`who`, '');
+
+-- Delete rows with NULL values in key columns from the temporary table
+DELETE FROM temp_op_sys
+WHERE id IS NULL
+   OR `what` IS NULL
+   OR `when` IS NULL
+   OR `who` IS NULL;
+
+-- Insert data from temporary table into the op_sys table
+INSERT INTO op_sys (id, `what`, `when`, `who`)
+SELECT id,
+       CASE
+           WHEN `what` NOT IN ('AIX GTK', 'AIX Motif', 'All', 'HP-UX', 'Linux', 'Linux-GTK', 'Linux-Motif', 'Linux Qt', 'Mac OS', 'Mac OS X', 'MacOS X', 'Mac OS X - Cocoa', 'Neutrino', 'other', 'Other', 'QNX-Photon', 'Solaris', 'Solaris-GTK', 'Solaris-Motif', 'SymbianOS S60', 'SymbianOS-Series 80', 'Symbian Qt', 'Unix All', 'what', 'Windows 2000', 'Windows 2003 Server', 'Windows 7', 'Windows 95', 'Windows 98', 'Windows All', 'Windows CE', 'Windows Me', 'Windows ME', 'Windows Mobile 2003', 'Windows Mobile 5.0', 'Windows NT', 'Windows Server 2003', 'Windows Server 2008', 'Windows Vista', 'Windows Vista Beta 2', 'Windows Vista-WPF', 'Windows XP')
+           THEN 'NONE'
+           ELSE `what`
+       END as `what`,
+       `when`,
+       `who`
+FROM temp_op_sys
+ON DUPLICATE KEY UPDATE
+   `what` = VALUES(`what`),
+   `when` = VALUES(`when`),
+   `who` = VALUES(`who`);
+
+-- Commit the transaction to apply changes
+COMMIT;
+
+-- Drop the temporary table
+DROP TEMPORARY TABLE temp_op_sys;
