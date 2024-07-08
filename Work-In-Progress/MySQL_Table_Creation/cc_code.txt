@@ -7,8 +7,7 @@ CREATE TABLE cc (
     `what` VARCHAR(255),
     `when` DATETIME,
     `who` INT(11),
-    PRIMARY KEY (id),
-    UNIQUE KEY (`id`, `what`, `when`, `who`)  -- Unique key to handle non-matching rows
+    PRIMARY KEY (id, `when`, `who`)
 );
 
 -- Start a transaction to ensure atomicity
@@ -42,11 +41,10 @@ WHERE id IS NULL
 
 -- Remove duplicates in the temporary table
 CREATE TEMPORARY TABLE deduped_cc AS
-SELECT id, `what`, `when`, `who`
-FROM temp_cc
-GROUP BY id;  -- Group by id to ensure uniqueness
+SELECT DISTINCT id, `what`, `when`, `who`
+FROM temp_cc;
 
--- Insert data into cc table, updating if combination of id, what, when, who exists
+-- Insert data from deduped temporary table into the cc table
 INSERT INTO cc (id, `what`, `when`, `who`)
 SELECT id, `what`, `when`, `who`
 FROM deduped_cc

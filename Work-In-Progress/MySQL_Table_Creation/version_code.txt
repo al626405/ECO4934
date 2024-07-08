@@ -7,7 +7,7 @@ CREATE TABLE version (
     `what` VARCHAR(10),
     `when` DATETIME,
     `who` INT(11),
-    PRIMARY KEY (id)
+    PRIMARY KEY (id, `when`, `who`)
 );
 
 -- Start a transaction to ensure atomicity
@@ -41,9 +41,15 @@ WHERE id IS NULL
 
 -- Insert unique data from temporary table into the version table
 INSERT INTO version (id, `what`, `when`, `who`)
-SELECT id, `what`, `when`, `who`
+SELECT id,
+       CASE
+           WHEN `what` IS NULL THEN 'NONE'
+           ELSE `what`
+       END as `what`,
+       `when`,
+       `who`
 FROM temp_version
-GROUP BY id;
+GROUP BY id, `when`, `who`;  -- Ensure uniqueness for primary keys
 
 -- Commit the transaction to apply changes
 COMMIT;

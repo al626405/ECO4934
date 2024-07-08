@@ -1,29 +1,29 @@
--- Drop existing priority table (only if you need to recreate it)
+-- Drop existing severity table (only if you need to recreate it)
 DROP TABLE IF EXISTS severity;
 
--- Create the priority table with the desired structure
+-- Create the severity table with the desired structure
 CREATE TABLE severity (
     id INT(11),
-    `what` ENUM('trivial', 'minor', 'normal', 'enhancement', 'major', 'critical','blocker'),
+    `what` ENUM('trivial', 'minor', 'normal', 'enhancement', 'major', 'critical', 'blocker'),
     `when` DATETIME,
     `who` INT(11),
-    PRIMARY KEY (id)
+    PRIMARY KEY (id, `when`, `who`)
 );
 
 -- Start a transaction to ensure atomicity
 START TRANSACTION;
 
 -- Create a temporary table to hold the data
-CREATE TEMPORARY TABLE temp_priority (
+CREATE TEMPORARY TABLE temp_severity (
     id INT(11),
-    `what` ENUM('trivial', 'minor', 'normal', 'enhancement', 'major', 'critical','blocker'),
+    `what` ENUM('trivial', 'minor', 'normal', 'enhancement', 'major', 'critical', 'blocker'),
     `when` DATETIME,
     `who` INT(11)
 );
 
 -- Load data from CSV file into the temporary table
 LOAD DATA INFILE '/var/lib/mysql/Final_Project/T1/severity.csv'
-INTO TABLE temp_priority
+INTO TABLE temp_severity
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES
@@ -33,27 +33,26 @@ SET `when` = FROM_UNIXTIME(@unix_time),
     `who` = NULLIF(`who`, '');
 
 -- Delete rows with NULL values in key columns from the temporary table
-DELETE FROM temp_priority
+DELETE FROM temp_severity
 WHERE id IS NULL
    OR `what` IS NULL
    OR `when` IS NULL
    OR `who` IS NULL;
 
--- Insert unique data from temporary table into the priority table
+-- Insert data from temporary table into the severity table
 INSERT INTO severity (id, `what`, `when`, `who`)
 SELECT id,
        CASE
-           WHEN `what` NOT IN ('trivial', 'minor', 'normal', 'enhancement', 'major', 'critical','blocker') THEN 'NONE'
+           WHEN `what` NOT IN ('trivial', 'minor', 'normal', 'enhancement', 'major', 'critical', 'blocker') THEN 'NONE'
            ELSE `what`
        END as `what`,
        `when`,
        `who`
-FROM temp_priority
-GROUP BY id;
+FROM temp_severity
+GROUP BY id, `when`, `who`;  -- Ensure uniqueness for primary keys
 
 -- Commit the transaction to apply changes
 COMMIT;
 
 -- Drop the temporary table
-DROP TEMPORARY TABLE temp_priority;
-
+DROP TEMPORARY TABLE temp_severity;

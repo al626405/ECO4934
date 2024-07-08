@@ -1,13 +1,13 @@
 -- Drop existing priority table (only if you need to recreate it)
-DROP TABLE IF EXISTS product;
+DROP TABLE IF EXISTS priority;
 
 -- Create the priority table with the desired structure
-CREATE TABLE product (
+CREATE TABLE priority (
     id INT(11),
-    `what` ENUM('Platform', 'JDT', 'CDT','EclipseLink'),
+    `what` ENUM('P1', 'P2', 'P3', 'P4', 'P5', 'NONE'),
     `when` DATETIME,
     `who` INT(11),
-    PRIMARY KEY (id)
+    PRIMARY KEY (id, `when`, `who`)
 );
 
 -- Start a transaction to ensure atomicity
@@ -22,7 +22,7 @@ CREATE TEMPORARY TABLE temp_priority (
 );
 
 -- Load data from CSV file into the temporary table
-LOAD DATA INFILE '/var/lib/mysql/Final_Project/T1/product.csv'
+LOAD DATA INFILE '/var/lib/mysql/Final_Project/T1/priority.csv'
 INTO TABLE temp_priority
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
@@ -40,10 +40,10 @@ WHERE id IS NULL
    OR `who` IS NULL;
 
 -- Insert data from temporary table into the priority table
-INSERT INTO product (id, `what`, `when`, `who`)
+INSERT INTO priority (id, `what`, `when`, `who`)
 SELECT id,
        CASE
-           WHEN `what` NOT IN ('Platform', 'JDT', 'CDT','EclipseLink') THEN 'NONE'
+           WHEN `what` NOT IN ('P1', 'P2', 'P3', 'P4', 'P5', 'NONE') THEN 'NONE'
            ELSE `what`
        END as `what`,
        `when`,
