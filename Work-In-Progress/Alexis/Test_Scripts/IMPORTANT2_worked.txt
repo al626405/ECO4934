@@ -1,0 +1,272 @@
+
+-- Drop existing reports table (only if you need to recreate it)
+DROP TABLE IF EXISTS priority;
+
+-- Create the reports table with the desired structure
+CREATE TABLE priority(
+    id INT(11),
+    what VARCHAR(100),
+    `when` DATETIME,
+    `who` INT(11),
+    PRIMARY KEY (id)  -- Assuming 'id' is the primary key
+);
+
+
+
+--Couldnt find an easy way to properly update the table with datetime variable, saved a temp csv and modified old one from the database of incorrect files.
+--I decided to start with a database where variables were unintentionally wrong and corrected them as I went along modifying a general script.
+--Additionally reports file had duplicates and missing values which lead to double commas (,,) instead of (,).
+CREATE TEMPORARY TABLE temp_reports (
+    id INT(11),
+    what VARCHAR(100),
+    `when` DATETIME,
+    `who` INT(11)
+);
+
+
+LOAD DATA INFILE '/var/lib/mysql/Final_Project/T1/priority.csv'
+INTO TABLE temp_reports
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(id, what, @unix_time, who)
+SET `when` = FROM_UNIXTIME(@unix_time),
+    what = NULLIF(what, ''),
+    who = NULLIF(who, '');
+
+DELETE FROM temp_reports
+WHERE id IS NULL
+   OR  `what` IS NULL
+   OR `when` IS NULL
+   OR `who` IS NULL;
+
+
+SELECT * 
+INTO OUTFILE '/var/lib/mysql/Final_Project/UPDATED_FILES/priority.csv'
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+FROM temp_reports;
+DROP TEMPORARY TABLE temp_reports;
+
+
+
+-- Start a transaction to ensure atomicity
+START TRANSACTION;
+
+-- Create a temporary table to hold the data
+CREATE TEMPORARY TABLE temp_reports (
+    id INT(11),
+    what  VARCHAR(100),
+    `when` DATETIME,
+    `who` INT(11)
+);
+
+-- Load data from CSV file into the temporary table
+LOAD DATA INFILE '/var/lib/mysql/Final_Project/T1/priority.csv'
+INTO TABLE temp_reports
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(id, current_resolution, current_status, @unix_time, who)
+SET `when` = FROM_UNIXTIME(@unix_time),
+    what = NULLIF(what, ''),
+    `who` = NULLIF(`who`, '');
+
+-- Delete rows with NULL values in key columns from the temporary table
+DELETE FROM temp_reports
+WHERE id IS NULL
+   OR what IS NULL
+   OR `when` IS NULL
+   OR `who` IS NULL;
+
+-- Insert data from temporary table into the reports table
+INSERT INTO priority (id, what, `when`, `who`)
+SELECT id, what, `when`, `who`
+FROM temp_reports;
+
+-- Commit the transaction to apply changes
+COMMIT;
+
+-- Drop the temporary table
+DROP TEMPORARY TABLE temp_reports;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- Drop existing reports table (only if you need to recreate it)
+DROP TABLE IF EXISTS priority;
+
+-- Create the reports table with the desired structure
+CREATE TABLE priority(
+    id INT(11),
+    what VARCHAR(100),
+    `when` DATETIME,
+    `who` INT(11),
+    PRIMARY KEY (id)  -- Assuming 'id' is the primary key
+);
+
+
+
+
+--I couldnt find a way to do this its 3:12AM and I have work tommorow.
+-- REPLACING OLD COLUMN IN DATABASE USING NEW CSV
+CREATE TEMPORARY TABLE temp_reports (
+    id INT(11),
+    what VARCHAR(100),
+    `when` DATETIME,
+    `who` INT(11)
+);
+
+LOAD DATA INFILE '/var/lib/mysql/Final_Project/UPDATED_FILES/priority.csv'
+INTO TABLE temp_reports
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(id, what, @unix_time, who)
+SET `when` = FROM_UNIXTIME(@unix_time),
+    what = NULLIF(what, ''),
+    who = NULLIF(who, '');
+
+-- Start a transaction to ensure atomicity
+START TRANSACTION;
+
+-- Delete existing data from reports table
+--DELETE FROM priority;
+
+-- Insert data from temp_reports into reports table
+INSERT INTO priority (id, what, `when`, `who`)
+SELECT id, what, `when`, `who`
+FROM temp_reports;
+
+-- Commit the transaction to apply changes
+COMMIT;
+
+DROP TEMPORARY TABLE temp_reports;
+
+
+
+
+
+
+
+
+
+
+
+
+-- Drop existing reports table (only if you need to recreate it)
+DROP TABLE IF EXISTS reports;
+
+-- Create the reports table with the desired structure
+CREATE TABLE reports (
+    id INT(11),
+    current_resolution VARCHAR(100),
+    current_status VARCHAR(100),
+    `when` DATETIME,
+    `who` INT(11),
+    PRIMARY KEY (id)  -- Assuming 'id' is the primary key
+);
+
+
+
+
+
+
+
+
+
+-- Load data from CSV file into the reports table
+LOAD DATA INFILE '/var/lib/mysql/Final_Project/UPDATED_FILES/reports.csv'
+INTO TABLE reports
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(id, current_resolution, current_status, @unix_time, who)
+SET `when` = FROM_UNIXTIME(@unix_time),
+    current_resolution = NULLIF(current_resolution, ''),
+    current_status = NULLIF(current_status, ''),
+    who = NULLIF(who, '');
+
+
+
+
+
+
+
+-- Verify data in the reports table
+SELECT * FROM reports LIMIT 10;  -- Adjust the LIMIT as needed to view more or fewer rows
+
+
+
+
+
+
+-- Start a transaction
+START TRANSACTION;
+
+-- Load data from CSV file into the reports table
+LOAD DATA INFILE '/var/lib/mysql/Final_Project/UPDATED_FILES/reports.csv'
+INTO TABLE reports
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(id, current_resolution, current_status, @unix_time, who)
+SET `when` = FROM_UNIXTIME(@unix_time),
+    current_resolution = NULLIF(current_resolution, ''),
+    current_status = NULLIF(current_status, ''),
+    who = NULLIF(who, '');
+
+-- Verify data in the reports table
+SELECT * FROM reports LIMIT 10;
+
+-- Commit the transaction to apply changes
+COMMIT;
