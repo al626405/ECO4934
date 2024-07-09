@@ -3,7 +3,7 @@
 #### 07/03/2024
 #### Final Project 
 
-#### <u>**Team 1:**</u>
+#### <u>**Group B:**</u>
 - Polina Baikova
 - Jonathon Lewis
 - Payton Irvin
