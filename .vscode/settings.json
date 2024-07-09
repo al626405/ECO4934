@@ -1,0 +1,19 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "ralice.xyz",
+            "port": 3306,
+            "driver": "MariaDB",
+            "name": "RALICE-Alexis",
+            "group": "Servers",
+            "database": "Dataset",
+            "username": "root",
+            "password": "123"
+        }
+    ]
+}
