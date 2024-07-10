@@ -1,10 +1,10 @@
--- Drop existing resolution table (only if you need to recreate it)
-DROP TABLE IF EXISTS resolution;
+-- Drop existing product table (only if you need to recreate it)
+DROP TABLE IF EXISTS product;
 
--- Create the resolution table with the desired structure
-CREATE TABLE resolution (
+-- Create the product table with the desired structure
+CREATE TABLE product (
     id INT(11),
-    `what` ENUM('fixed', 'invalid', 'wontfix', 'duplicate', 'worksforme', 'incomplete'),
+    `what` ENUM('Platform', 'JDT', 'CDT', 'EclipseLink'),
     `when` DATETIME,
     `who` INT(11),
     PRIMARY KEY (id, `when`, `who`)
@@ -14,7 +14,7 @@ CREATE TABLE resolution (
 START TRANSACTION;
 
 -- Create a temporary table to hold the data
-CREATE TEMPORARY TABLE temp_resolution (
+CREATE TEMPORARY TABLE temp_product (
     id INT(11),
     `what` VARCHAR(100),
     `when` DATETIME,
@@ -22,8 +22,8 @@ CREATE TEMPORARY TABLE temp_resolution (
 );
 
 -- Load data from CSV file into the temporary table
-LOAD DATA INFILE '/var/lib/mysql/Final_Project/T1/resolution.csv'
-INTO TABLE temp_resolution
+LOAD DATA INFILE '/var/lib/mysql/Final_Project/T1/product.csv'
+INTO TABLE temp_product
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES
@@ -33,22 +33,22 @@ SET `when` = FROM_UNIXTIME(@unix_time),
     `who` = NULLIF(`who`, '');
 
 -- Delete rows with NULL values in key columns from the temporary table
-DELETE FROM temp_resolution
+DELETE FROM temp_product
 WHERE id IS NULL
    OR `what` IS NULL
    OR `when` IS NULL
    OR `who` IS NULL;
 
--- Insert data from temporary table into the resolution table
-INSERT INTO resolution (id, `what`, `when`, `who`)
+-- Insert data from temporary table into the product table
+INSERT INTO product (id, `what`, `when`, `who`)
 SELECT id,
        CASE
-           WHEN `what` NOT IN ('fixed', 'invalid', 'wontfix', 'duplicate', 'worksforme', 'incomplete') THEN 'NONE'
+           WHEN `what` NOT IN ('Platform', 'JDT', 'CDT', 'EclipseLink') THEN 'NONE'
            ELSE `what`
        END as `what`,
        `when`,
        `who`
-FROM temp_resolution
+FROM temp_product
 ON DUPLICATE KEY UPDATE
    `what` = VALUES(`what`),
    `when` = VALUES(`when`),
@@ -58,4 +58,4 @@ ON DUPLICATE KEY UPDATE
 COMMIT;
 
 -- Drop the temporary table
-DROP TEMPORARY TABLE temp_resolution;
+DROP TEMPORARY TABLE temp_product;
