@@ -1,0 +1,62 @@
+USE EclipseFinalData;
+
+-- Drop existing Dataset table if it exists
+DROP TABLE IF EXISTS Dataset;
+
+-- Create the Dataset table with prefixed column names
+CREATE TABLE Dataset (
+    increment_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    bug_status_id INT(11),
+    bug_status_what ENUM('unconfirmed', 'new', 'assigned', 'reopened', 'ready', 'resolved', 'verified', 'closed'),
+    bug_status_when DATETIME,
+    bug_status_who INT(11),
+    resolution_id INT(11),
+    resolution_what ENUM('DUPLICATE', 'FIXED', 'WORKSFORME', 'INVALID', 'WONTFIX', 'REMIND', 'LATER', 'NOT_ECLIPSE'),
+    resolution_when DATETIME,
+    resolution_who INT(11),
+    assigned_to_id INT(11),
+    assigned_to_what VARCHAR(1024),
+    assigned_to_when DATETIME,
+    assigned_to_who INT(11),
+    priority_id INT(11),
+    priority_what ENUM('P1', 'P2', 'P3', 'P4', 'P5', 'NONE'),
+    priority_when DATETIME,
+    priority_who INT(11),
+    severity_id INT(11),
+    severity_what ENUM('trivial', 'minor', 'normal', 'enhancement', 'major', 'critical', 'blocker'),
+    severity_when DATETIME,
+    severity_who INT(11),
+    op_sys_id INT(11),
+    op_sys_what ENUM('AIX GTK', 'AIX Motif', 'All', 'HP-UX', 'Linux', 'Linux-GTK', 'Linux-Motif', 'Linux Qt', 'Mac OS', 'Mac OS X', 'MacOS X', 'Mac OS X - Cocoa', 'Neutrino', 'other', 'Other', 'QNX-Photon', 'Solaris', 'Solaris-GTK', 'Solaris-Motif', 'SymbianOS S60', 'SymbianOS-Series 80', 'Symbian Qt', 'Unix All', 'what', 'Windows 2000', 'Windows 2003 Server', 'Windows 7', 'Windows 95', 'Windows 98', 'Windows All', 'Windows CE', 'Windows Me', 'Windows ME', 'Windows Mobile 2003', 'Windows Mobile 5.0', 'Windows NT', 'Windows Server 2003', 'Windows Server 2008', 'Windows Vista', 'Windows Vista Beta 2', 'Windows Vista-WPF', 'Windows XP'),
+    op_sys_when DATETIME,
+    op_sys_who INT(11),
+    component_id INT(11),
+    component_what ENUM('accservice','AI','alf-core','alf-tools','All','Annotations','Ant','API Tools','App','apps.eclipse.org','APT','Architecture Council','Articles','ASF.Runtime','ATL-UI','Autotools','Bugzilla','Build','Build/Web','bundles','Bundles','Callisto','CDateTime','CDE','cdt-build','cdt-build-managed','cdt-codan','CDT-Contrib','cdt-core','cdt-cppunit','cdt-debug','cdt-debug-cdi','cdt-debug-cdi-gdb','cdt-debug-dsf','cdt-debug-dsf-gdb','cdt-debug-edc','cdt-doc','cdt-editor','cdt-indexer','cdt-launch','cdt-memory','cdt-other','cdt-parser','CDT-parser','cdt-refactoring','cdt-releng','cdt-source-nav','Cell','Chart','CME','Code Assist','Codegen','CommitterTools','Compare','Compendium','Components','CompositeTable','Connection Mgt Framework','Connectivity','core','Core','Cpp-Extensions','cpp-package','Cross-project','Cross-Project','CVS','Data Source Explorer','DataTools','DD','Debug','Debugger','Debug-MI','Debug-UI','Demo','deprecated2','deprecated3','deprecated4','deprecated5','deprecated6','deprecated7','Desktop','DevTools','Doc','DOC','Docs','documentation','Documentation','draw2d','DSF','Dynamic Plugins','e4','ecf.core','ecf.doc','ecf.filetransfer','EclipseBot','EclipseCon','Edit','Editor','EEF','eJFace','EnglishStrings','eSWT','eWorkbench','Examples','Faceted Project Framework','FAQ','Forums and Newsgroups','Foundation','Framework','GDB','geclipse','GEF','General','General UI','Generic-Extensions','Help','Hudson','Hyades','IDE','Incubator','Incubators','Intro','IPZilla','J2EE Standard Tools','Java','Javaco','Java Core','Java Model (JEM)','java-package','jee-package','Jet','JET','JFace','JFC/Swing','Jira','jst.ejb','jst.j2ee','jst.jsp','jst.server','jst.servlet','jst.ws','Launcher','LinuxDistros','LPEX','Mapping','Marketplace','Memory','MI','Models - Graphical','Monitor.UI','Monitor.UI.GLARules','Monitor.UI.SDBEditor','mozide','Mozilla','MTJ projects','newsgroups','Newsgroups','OAW','org.eclipse.stp.bpmn','OSGi','Other','Outline Views','p2','package content','Phoenix','PHP Explorer View','PHP Search','Platform.Analysis','Platform.Collection','Platform.Communication','Platform.Execution','Platform.LineCoverage.Runtime','Platform.Model','Platform.UI','Platform.UI.ProfilingPerspective','Platform.UI.SequenceDiagram','Platform.UI.StatsPerfViewers','PLDT','Plugins','PMC','Portal','Prereq','Problems view','Process','Project Management','RDT','releng','Releng','Report','Report Designer','Report Viewer','Repository','Resources','RSE','Runtime','Runtime Common','Runtime Diagram','Scripting','Search','Security','Server','Server-Side','SQLDevTools','SQL Editor Framework','SWT','SWTBot','Table Data Editor','Tasks','Team','Teneo','Test.Agents','Test.Execution','Test.Execution.JUnitRunner','Test.http','Test.UI','Test.UI.JUnit','Test.UI.Reporting','Text','TM','tools','Tools','Trac','Trace.UI','translations','ufacekit','ui','UI','UI Guidelines','UML','UML2','Unspecified','Update','Update (deprecated - use RT>Equinox>p2)','Updater','Update Site','User','User Assistance','Utils','VCM','Visualization','WebDAV','Web Server (Apache)','Website','Web Standard Tools','what','wizard','Workbench','wst.common','wst.css','wst.html','wst.internet','wst.javascript','wst.jsdt','wst.server','wst.sse','wst.web','wst.ws','wst.wsdl','wtp.inc.jpaeditor','Xtext'),
+    component_when DATETIME,
+    component_who INT(11),
+    product_id INT(11),
+    product_what ENUM('Platform', 'JDT', 'CDT', 'EclipseLink'),
+    product_when DATETIME,
+    product_who INT(11),
+    cc_id INT(11),
+    cc_what VARCHAR(1024),
+    cc_when DATETIME,
+    cc_who INT(11),
+    short_desc_id INT(11),
+    short_desc_what VARCHAR(1024),
+    short_desc_when DATETIME,
+    short_desc_who INT(11),
+    reports_id INT(11),
+    reports_current_resolution VARCHAR(100),
+    reports_current_status VARCHAR(100),
+    reports_when DATETIME,
+    reports_who INT(11),
+    version_id INT(11),
+    version_what VARCHAR(10),
+    version_when DATETIME,
+    version_who INT(11),
+    UNIQUE KEY unique_dataset (bug_status_id, bug_status_when, resolution_when, assigned_to_when, priority_when, severity_when, op_sys_when, component_when, product_when, cc_when, short_desc_when, reports_when, version_when)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
