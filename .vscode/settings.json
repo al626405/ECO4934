@@ -11,9 +11,9 @@
             "driver": "MariaDB",
             "name": "RALICE-Alexis",
             "group": "Servers",
-            "database": "Dataset",
+            "database": "F",
             "username": "root",
-            "password": "123"
+            "password": "AL@12345"
         }
     ]
 }
