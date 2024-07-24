@@ -39,7 +39,6 @@ Bash Terminal Commands
    #                File & Filepath Commands           #
    ####################################################
 
-   | Show The Current Directory:                         |
    |---------------------------------------------------- |
    | Show The Current Directory:                         |
    |---------------------------------------------------- |
