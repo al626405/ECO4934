@@ -1,23 +1,50 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-<title> Theory </title>
-<link rel="stylesheet" href="style.css">
+<head><meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theory Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 
 <body> 
-    <div class="header">
-        <h1> Theory </h1>
-    </div>
-    <div class="nav_bar">
-        <a href="webpage.html">homepage</a>
-    </div>
-    <div class="main">
-        <h2> Theory description </h2>
-	<p> text here </p>
-    </div>
+    <nav>
+        <ul>
+            <li><a href="LogitTheory.html">Logistic Regression</a></li>
+            <li><a href="LogitLassoTheory.html">Logistic Regression with Lasso</a></li>
+            <li><a href="BaggingTheory.html">Bagging</a></li>
+            <li><a href="RandomForestTheory.html">Random Forests</a></li>
+            <li><a href="BoostingTheory.html">Boosting</a></li>
+        </ul>
+    </nav>
 
 </body>
 </html>
