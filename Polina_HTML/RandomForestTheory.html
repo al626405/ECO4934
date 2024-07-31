@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Forests for Bug Fix Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .content {
+            max-width: 800px;
+            margin: auto;
+            text-align: justify;
+            text-justify: inter-word;
+        }
+        .header {
+            margin: auto;
+            margin-top: 30px;
+            width: 860px;
+            border: 1px solid #000000;
+            background: #F5F5F5;
+            padding: 20px;
+            text-align: center;
+        }
+        .nav_bar {
+            margin: auto;
+    	    width: 860px;
+    	    padding: 5px 20px 5px 20px;
+    	    border: 1px solid #000000;
+            background: #000000; 
+            color: #ffffff;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .nav_bar a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        .nav_bar a:hover {
+            text-decoration: underline;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1> Random Forests for Predicting Bug Fixes </h1>
+    </div>
+    <div class="nav_bar">
+        <a href="webpage.html"> Back to Home </a>
+        <a href="Theory.html">Back to Theory</a>
+    </div>
+
+    <div class="content">
+        <p>Random Forest is an ensemble learning method that combines multiple decision trees to improve predictive performance. In the context of software bug reports, it can be used to predict whether a reported bug will be fixed or not based on various characteristics of the bug report.</p>
+        
+        <h2>Understanding Random Forests</h2>
+        <p>A Random Forest consists of a collection of decision trees, each trained on a different subset of the data. The final prediction is made by aggregating the predictions of the individual trees, usually by majority voting for classification problems.</p>
+        
+        <h3>How Random Forests Work</h3>
+        <ol>
+            <li><strong>Bootstrap Sampling</strong>: Generate multiple training datasets by randomly sampling with replacement from the original dataset.</li>
+            <li><strong>Random Feature Selection</strong>: For each decision tree, a random subset of features is selected to determine the best split at each node.</li>
+            <li><strong>Model Training</strong>: Train a decision tree on each bootstrap sample using the randomly selected features.</li>
+            <li><strong>Aggregation</strong>: Combine the predictions from each decision tree to make the final prediction. For classification tasks, this is usually done by majority voting.</li>
+        </ol>
+        
+        <h3>Why Random Forests Work</h3>
+        <p>Random Forests reduce the variance of the model by averaging multiple decision trees, which helps to improve accuracy and robustness. The random selection of features at each split ensures that the trees are diverse, further enhancing the ensemble's performance.</p>
+        
+        <h2>Random Forests for Bug Fix Prediction</h2>
+        <p>When using Random Forests to predict whether a software bug will be fixed, the following steps are typically followed:</p>
+        <ul>
+            <li><strong>Step 1: Data Preparation</strong> - Gather and preprocess the bug report data, including relevant features such as severity, priority, affected component, reported date, reporter reputation, number of comments, and presence of a reproducible test case.</li>
+            <li><strong>Step 2: Bootstrap Sampling</strong> - Create multiple bootstrap samples from the preprocessed data.</li>
+            <li><strong>Step 3: Random Feature Selection</strong> - For each decision tree, select a random subset of features at each node to determine the best split.</li>
+            <li><strong>Step 4: Model Training</strong> - Train a decision tree on each bootstrap sample using the randomly selected features.</li>
+            <li><strong>Step 5: Aggregation</strong> - Combine the predictions from each decision tree using majority voting to make the final prediction.</li>
+        </ul>
+        
+        <h2>Advantages of Random Forests</h2>
+        <p>Random Forests offer several advantages:</p>
+        <ul>
+            <li><strong>Improved Accuracy</strong>: By reducing variance, Random Forests often improve the accuracy of the base model.</li>
+            <li><strong>Robustness</strong>: Random Forests are robust to outliers and noise in the data.</li>
+            <li><strong>Feature Importance</strong>: They provide estimates of feature importance, which can be useful for understanding the underlying data.</li>
+            <li><strong>Reduced Overfitting</strong>: The ensemble approach helps to prevent overfitting.</li>
+        </ul>
+        
+        <h2>Limitations of Random Forests</h2>
+        <p>Despite their advantages, Random Forests have some limitations:</p>
+        <ul>
+            <li><strong>Computationally Intensive</strong>: Training multiple decision trees can be computationally expensive and time-consuming.</li>
+            <li><strong>Model Interpretability</strong>: The final model is less interpretable than a single decision tree.</li>
+        </ul>
+        
+        <h2>Evaluating the Model</h2>
+        <p>After fitting the Random Forest model, its performance should be evaluated using metrics such as:</p>
+        <ul>
+            <li><strong>Accuracy</strong>: The proportion of correctly classified instances.</li>
+            <li><strong>Precision</strong>: The proportion of true positives among all positive predictions.</li>
+            <li><strong>Recall</strong>: The proportion of true positives among all actual positives.</li>
+            <li><strong>F1 Score</strong>: The harmonic mean of precision and recall.</li>
+            <li><strong>ROC Curve</strong>: A plot of the true positive rate against the false positive rate at various threshold settings.</li>
+            <li><strong>AUC (Area Under the ROC Curve)</strong>: A single scalar value to measure the overall performance of the model.</li>
+        </ul>
+        
+        <h2>Conclusion</h2>
+        <p>Random Forests are a powerful ensemble learning technique that can significantly enhance the performance and stability of machine learning models. By applying Random Forests to predict whether a software bug will be fixed, we can leverage the strengths of multiple decision trees to make more accurate and robust predictions.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logit Regression Model for Bug Fix Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            text-align: justify;
+            text-justify: inter-word;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .content {
+            max-width: 800px;
+            margin: auto;
+        }
+        .header {
+            margin: auto;
+            margin-top: 30px;
+            width: 860px;
+            border: 1px solid #000000;
+            background: #cccccc;
+            padding: 20px;
+            text-align: center;
+        }
+        .nav_bar {
+            margin: auto;
+    	    width: 860px;
+    	    padding: 5px 20px 5px 20px;
+    	    border: 1px solid #000000;
+            background: #000000; 
+            color: #ffffff;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .nav_bar a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        .nav_bar a:hover {
+            text-decoration: underline;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1> Problem </h1>
+    </div>
+    <div class="nav_bar">
+        <a href="webpage.html"> Back to Home </a>
+    </div>
+
+    <div class="content">
+        <p>In continuous software engineering, each major release introduces significant new or modified functionality. Developers strive to resolve as many bugs as possible in both current and future releases. Analyzing bug reports leverages extensive data from defect tracking systems to gain valuable insights into the bug triaging process.</p>
+        <p>Large software projects, such as those using the Eclipse and Mozilla Defect Tracking Dataset, manage hundreds of thousands of bug reports over time. These bugs can cause software issues, leading to significant economic costs. Bug triaging, the process of reviewing and prioritizing bugs, is labor-intensive and requires understanding various factors influencing bug resolution. The goal is to improve this process, making it more efficient and effective.</p>
+        <p>In this project we will explore the Eclipse defect tracking dataset, aiming to develop insights into the factors affecting the likelihood of a bug being fixed. The Eclipse dataset provided for this analysis includes twelve CSV files corresponding to various attributes like priority, severity, product, component, bug status, resolution, assigned developer, and more. Each file contains a list of updates and changes that have been performed during the bug's lifetime, indicated by UNIX timestamps and other relevant details. By investigating the entire lifecycle of a bug report, we can develop a thorough understanding and extract meaningful insights from the data. This rich dataset allows for a comprehensive analysis of bug reports, facilitating the development of robust predictive models. </p>               
+        <p>However, this analysis presents certain challenges. The dataset's complexity, with detailed historical records for each bug, requires sophisticated data processing and feature engineering techniques. Variability in attributes such as priority, severity, and product can impact bug resolution differently, making it challenging to identify significant predictors. Developing accurate predictive models requires careful selection of techniques and parameter tuning to balance bias and variance. Ensuring that models generalize well to unseen data is crucial, involving validation on hold out dataset. </p>
+        <p>There are several steps to be taken to address the challenges mentioned above. The first crucial step is understanding the dataset and identifying key factors influencing bug resolution. Creating relevant variables through feature engineering is necessary to capture the complexity of the data. The selection of appropriate models is critical, as different algorithms may perform better based on the nature of the dataset and the specific problem at hand. Techniques such as logistic regression, logistic regression with LASSO regularization, bagging, random forest, and boosting each have their strengths and weaknesses. 
+        <p> Experimenting with various models involves training them on the dataset, evaluating their performance, and adjusting them based on their results. Key performance metrics will guide the evaluation process, helping identify which models are most effective. This iterative process of model experimentation, evaluation, and adjustment is essential to develop robust predictive models that perform well on real-world data. </p>
+        <p> The importance of analyzing and predicting bug fixes cannot be overstated. Accurate predictions allow for the prioritization of critical issues, leading to higher software quality and reliability. Understanding the factors influencing bug resolution helps allocate development resources more efficiently, optimizing efforts and reducing costs. Timely fixing of bugs enhances user experience and satisfaction, making the software more stable and reliable.</p>
+    </div>
+</body>
+</html>
